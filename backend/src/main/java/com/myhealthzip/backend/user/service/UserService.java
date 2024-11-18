@@ -4,11 +4,9 @@ import com.myhealthzip.backend.user.dto.NewUserDto;
 import com.myhealthzip.backend.user.model.User;
 import com.myhealthzip.backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class UserService {
