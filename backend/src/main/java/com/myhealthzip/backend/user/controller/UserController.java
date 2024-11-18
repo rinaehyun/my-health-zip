@@ -1,10 +1,9 @@
 package com.myhealthzip.backend.user.controller;
 
+import com.myhealthzip.backend.user.dto.NewUserDto;
 import com.myhealthzip.backend.user.model.User;
 import com.myhealthzip.backend.user.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +20,10 @@ public class UserController {
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
+    }
+
+    @PostMapping
+    public User createAUser(@RequestBody NewUserDto newUserDto) {
+        return userService.createAUser(newUserDto);
     }
 }
