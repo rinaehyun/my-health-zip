@@ -5,6 +5,7 @@ import com.myhealthzip.backend.user.model.User;
 import com.myhealthzip.backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 
@@ -12,9 +13,11 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final Clock clock;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, Clock clock) {
         this.userRepository = userRepository;
+        this.clock = clock;
     }
 
     public List<User> getAllUsers() {
@@ -22,10 +25,10 @@ public class UserService {
     }
 
     public User createAUser(NewUserDto newUserDto) {
-        User newUser = new User();
-        newUser.setUsername(newUserDto.username());
-        newUser.setPassword(newUserDto.password());
-        newUser.setCreatedTime(Instant.now());
-        return userRepository.save(newUser);
+        User userToSave = new User();
+        userToSave.setUsername(newUserDto.username());
+        userToSave.setPassword(newUserDto.password());
+        userToSave.setCreatedTime(Instant.now(clock));
+        return userRepository.save(userToSave);
     }
 }
