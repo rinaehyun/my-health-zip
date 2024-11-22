@@ -4,8 +4,11 @@ import com.myhealthzip.backend.user.dto.NewUserDto;
 import com.myhealthzip.backend.user.model.User;
 import com.myhealthzip.backend.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
+import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +19,12 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
 
     private final UserRepository userRepository = mock(UserRepository.class);
-    private final UserService userService = new UserService(userRepository);
+    //private final Clock clock = mock(Clock.class);
+    Clock fixedClock = Clock.fixed(Instant.parse("2023-11-19T10:00:00Z"), ZoneId.of("UTC"));
 
-    private final Instant createdTime = Instant.now();
+    private final UserService userService = new UserService(userRepository, fixedClock);
+
+    private final Instant createdTime = Instant.now(fixedClock);
 
     @Test
     void getAllUsersTest_whenDBIsEmpty_thenReturnEmptyList() {
@@ -54,6 +60,36 @@ class UserServiceTest {
         );
 
         verify(userRepository, times(1)).findAll();
+        assertEquals(expected, actual);
+    }
+
+
+    @Test
+    void createAUserTest_whenPayloadIsCorrect_thenReturnNewUser() {
+        // GIVEN
+        NewUserDto newUserDto = new NewUserDto("user1", "user1");
+
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
+            User savedUser = invocation.getArgument(0);
+            savedUser.setUserId(1); // Simulate ID assignment by database
+            return savedUser;
+        });
+
+        // WHEN
+        User actual = userService.createAUser(newUserDto);
+
+        // THEN
+        User expected = new User();
+        expected.setUsername(newUserDto.username());
+        expected.setPassword(newUserDto.password());
+        expected.setCreatedTime(createdTime);
+        expected.setUserId(1);
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository, times(1)).save(userCaptor.capture());
+
+        User capturedUser = userCaptor.getValue();
+        assertEquals(expected, capturedUser);
         assertEquals(expected, actual);
     }
 }
