@@ -19,7 +19,6 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
 
     private final UserRepository userRepository = mock(UserRepository.class);
-    //private final Clock clock = mock(Clock.class);
     Clock fixedClock = Clock.fixed(Instant.parse("2023-11-19T10:00:00Z"), ZoneId.of("UTC"));
 
     private final UserService userService = new UserService(userRepository, fixedClock);

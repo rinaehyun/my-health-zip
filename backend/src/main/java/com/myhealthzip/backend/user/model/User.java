@@ -1,8 +1,6 @@
 package com.myhealthzip.backend.user.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 import java.time.Instant;
 import java.util.Objects;
