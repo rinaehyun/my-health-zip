@@ -37,7 +37,7 @@ class UserServiceTest {
         // THEN
         verify(userRepository, times(1)).findAll();
 
-        assertThat(actual.isEmpty());
+        assertThat(actual).isEmpty();
     }
 
     @Test

@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserIntegrationTest {
+class UserIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
