@@ -100,4 +100,26 @@ class UserIntegrationTest {
                 .andExpect(jsonPath("$.password").value("user1"))
                 .andExpect(jsonPath("$.createdTime").value("2024-11-19T10:00:00Z"));
     }
+
+    @Test
+    void createAUserTest_whenPayloadIsNotCorrect_thenSaveUserEntity() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(post("/api/user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                    {
+                        "username": "user1"
+                    }
+                """))
+                // THEN
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().json("""
+                    {
+                        "status": 500,
+                        "message": "The username and password cannot be null."
+                    }
+                """))
+                .andExpect(jsonPath("$.timestamp").exists());
+    }
 }

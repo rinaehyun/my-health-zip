@@ -27,7 +27,7 @@ public class UserService {
 
     public User createAUser(NewUserDto newUserDto) {
         if (newUserDto == null || newUserDto.username() == null || newUserDto.password() == null) {
-            throw new UserInputNotCompletedException("The username and password cannot be null. ");
+            throw new UserInputNotCompletedException("The username and password cannot be null.");
         }
 
         User userToSave = new User();
