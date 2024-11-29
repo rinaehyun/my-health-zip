@@ -1,6 +1,7 @@
 package com.myhealthzip.backend.user.service;
 
 import com.myhealthzip.backend.user.dto.NewUserDto;
+import com.myhealthzip.backend.user.exception.UserInputNotCompletedException;
 import com.myhealthzip.backend.user.model.User;
 import com.myhealthzip.backend.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -90,5 +91,16 @@ class UserServiceTest {
         User capturedUser = userCaptor.getValue();
         assertEquals(expected, capturedUser);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void createAUserTest_whenPayloadIsNotCorrect_thenThrow() {
+        // GIVEN
+        NewUserDto newUserDto = new NewUserDto("user1", null);
+
+        // WHEN
+        // THEN
+        assertThrows(UserInputNotCompletedException.class, () -> userService.createAUser(newUserDto));
+        verify(userRepository, never()).save(any(User.class));
     }
 }

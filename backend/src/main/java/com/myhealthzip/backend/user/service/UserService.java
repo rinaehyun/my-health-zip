@@ -26,14 +26,14 @@ public class UserService {
     }
 
     public User createAUser(NewUserDto newUserDto) {
+        if (newUserDto == null || newUserDto.username() == null || newUserDto.password() == null) {
+            throw new UserInputNotCompletedException("The username and password cannot be null. ");
+        }
+
         User userToSave = new User();
         userToSave.setUsername(newUserDto.username());
         userToSave.setPassword(newUserDto.password());
         userToSave.setCreatedTime(Instant.now(clock));
-
-        if (userToSave.getUsername() == null || userToSave.getPassword() == null) {
-            throw new UserInputNotCompletedException("The username and password cannot be null. ");
-        }
 
         return userRepository.save(userToSave);
     }
