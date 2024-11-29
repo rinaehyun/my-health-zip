@@ -1,6 +1,7 @@
 package com.myhealthzip.backend.user.service;
 
 import com.myhealthzip.backend.user.dto.NewUserDto;
+import com.myhealthzip.backend.user.exception.UserInputNotCompletedException;
 import com.myhealthzip.backend.user.model.User;
 import com.myhealthzip.backend.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,11 @@ public class UserService {
         userToSave.setUsername(newUserDto.username());
         userToSave.setPassword(newUserDto.password());
         userToSave.setCreatedTime(Instant.now(clock));
+
+        if (userToSave.getUsername() == null || userToSave.getPassword() == null) {
+            throw new UserInputNotCompletedException("The username and password cannot be null. ");
+        }
+
         return userRepository.save(userToSave);
     }
 }
