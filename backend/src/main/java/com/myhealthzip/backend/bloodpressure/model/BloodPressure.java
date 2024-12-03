@@ -30,7 +30,7 @@ public class BloodPressure {
     private Instant createdTime;
 
     // Constructor
-    public BloodPressure() {}
+    public BloodPressure() { /* constructor without any fields */ }
 
     // Comparison
     @Override
