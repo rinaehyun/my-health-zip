@@ -32,6 +32,14 @@ public class BloodPressure {
     // Constructor
     public BloodPressure() { /* constructor without any fields */ }
 
+    public BloodPressure(Integer bloodPressureId, Integer userId, Integer systolic, Integer diastolic, Instant createdTime) {
+        this.bloodPressureId = bloodPressureId;
+        this.userId = userId;
+        this.systolic = systolic;
+        this.diastolic = diastolic;
+        this.createdTime = createdTime;
+    }
+
     // Comparison
     @Override
     public boolean equals(Object o) {
