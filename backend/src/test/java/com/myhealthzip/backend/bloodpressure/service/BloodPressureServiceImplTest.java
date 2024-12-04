@@ -1,8 +1,10 @@
 package com.myhealthzip.backend.bloodpressure.service;
 
+import com.myhealthzip.backend.bloodpressure.dto.NewBloodPressureDto;
 import com.myhealthzip.backend.bloodpressure.model.BloodPressure;
 import com.myhealthzip.backend.bloodpressure.repository.BloodPressureRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -59,4 +61,32 @@ class BloodPressureServiceImplTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void saveBloodPressureTest_whenPayloadIsCorrect_thenReturnBloodPressureEntity() {
+        // GIVEN
+        NewBloodPressureDto newBloodPressureDto = new NewBloodPressureDto(120, 80);
+
+        when(bloodPressureRepository.save(any(BloodPressure.class))).thenAnswer(invocation -> {
+            BloodPressure bloodPressureToSave = invocation.getArgument(0);
+            bloodPressureToSave.setBloodPressureId(1);
+            return bloodPressureToSave;
+        });
+
+        // WHEN
+        BloodPressure actual = bloodPressureService.saveBloodPressure(newBloodPressureDto);
+
+        // THEN
+        BloodPressure expected = new BloodPressure();
+        expected.setBloodPressureId(1);
+        expected.setSystolic(newBloodPressureDto.systolic());
+        expected.setDiastolic(newBloodPressureDto.diastolic());
+        expected.setCreatedTime(createdTime);
+
+        ArgumentCaptor<BloodPressure> bloodPressureCaptor = ArgumentCaptor.forClass(BloodPressure.class);
+        verify(bloodPressureRepository, times(1)).save(bloodPressureCaptor.capture());
+
+        BloodPressure capturedBloodPressure = bloodPressureCaptor.getValue();
+        assertEquals(expected, capturedBloodPressure);
+        assertEquals(expected, actual);
+    }
 }
