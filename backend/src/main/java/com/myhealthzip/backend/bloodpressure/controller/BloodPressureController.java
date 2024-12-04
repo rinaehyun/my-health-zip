@@ -1,10 +1,9 @@
 package com.myhealthzip.backend.bloodpressure.controller;
 
+import com.myhealthzip.backend.bloodpressure.dto.NewBloodPressureDto;
 import com.myhealthzip.backend.bloodpressure.model.BloodPressure;
 import com.myhealthzip.backend.bloodpressure.service.BloodPressureServiceImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +20,10 @@ public class BloodPressureController {
     @GetMapping
     public List<BloodPressure> getBloodPressure() {
         return bloodPressureService.getBloodPressures();
+    }
+
+    @PostMapping
+    public BloodPressure saveBloodPressure(@RequestBody NewBloodPressureDto newBloodPressureDto) {
+        return bloodPressureService.saveBloodPressure(newBloodPressureDto);
     }
 }

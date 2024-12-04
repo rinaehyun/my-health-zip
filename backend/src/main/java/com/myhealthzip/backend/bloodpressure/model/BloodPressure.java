@@ -17,13 +17,13 @@ public class BloodPressure {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bloodPressureId;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = true)
     private Integer userId;
 
-    @Column(name = "systolic")
+    @Column(name = "systolic", nullable = false)
     private Integer systolic;
 
-    @Column(name = "diastolic")
+    @Column(name = "diastolic", nullable = false)
     private Integer diastolic;
 
     @Column(name = "created_at", nullable = false)
