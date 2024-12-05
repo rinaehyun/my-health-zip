@@ -42,7 +42,7 @@ class BloodPressureServiceImplTest {
     }
 
     @Test
-    void getBloodPressuresTest_whenDBHasData_thenReturnEmptyList() {
+    void getBloodPressuresTest_whenDBHasData_thenReturnListOfBloodPressure() {
         // GIVEN
         List<BloodPressure> bloodPressures = List.of(
                 new BloodPressure(1, 5, 120, 80, createdTime),
