@@ -1,6 +1,7 @@
 package com.myhealthzip.backend.bloodpressure.service;
 
 import com.myhealthzip.backend.bloodpressure.dto.NewBloodPressureDto;
+import com.myhealthzip.backend.bloodpressure.exception.BloodPressureInputNotCompletedException;
 import com.myhealthzip.backend.bloodpressure.model.BloodPressure;
 import com.myhealthzip.backend.bloodpressure.repository.BloodPressureRepository;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class BloodPressureServiceImplTest {
@@ -88,5 +90,18 @@ class BloodPressureServiceImplTest {
         BloodPressure capturedBloodPressure = bloodPressureCaptor.getValue();
         assertEquals(expected, capturedBloodPressure);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void saveBloodPressureTest_whenPayloadIsNotCorrect_thenThrow() {
+        // GIVEN
+        NewBloodPressureDto newBloodPressureDto = new NewBloodPressureDto(null, 85);
+
+        // WHEN
+        // THEN
+        assertThrows(BloodPressureInputNotCompletedException.class,
+                () -> bloodPressureService.saveBloodPressure(newBloodPressureDto)
+        );
+        verify(bloodPressureRepository, never()).save(any(BloodPressure.class));
     }
 }
