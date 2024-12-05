@@ -1,6 +1,7 @@
 package com.myhealthzip.backend.bloodpressure.service;
 
 import com.myhealthzip.backend.bloodpressure.dto.NewBloodPressureDto;
+import com.myhealthzip.backend.bloodpressure.exception.BloodPressureInputNotCompletedException;
 import com.myhealthzip.backend.bloodpressure.model.BloodPressure;
 import com.myhealthzip.backend.bloodpressure.repository.BloodPressureRepository;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class BloodPressureServiceImpl implements BloodPressureService {
 
     @Override
     public BloodPressure saveBloodPressure(NewBloodPressureDto newBloodPressureDto) {
+        if (newBloodPressureDto == null || newBloodPressureDto.systolic() == null
+                || newBloodPressureDto.diastolic() == null) {
+            throw new BloodPressureInputNotCompletedException("The input of blood pressure is not completed.");
+        }
+
         BloodPressure bloodPressureToSave = new BloodPressure();
         bloodPressureToSave.setSystolic(newBloodPressureDto.systolic());
         bloodPressureToSave.setDiastolic(newBloodPressureDto.diastolic());
