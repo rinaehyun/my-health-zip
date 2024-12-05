@@ -104,4 +104,16 @@ class BloodPressureServiceImplTest {
         );
         verify(bloodPressureRepository, never()).save(any(BloodPressure.class));
     }
+
+    @Test
+    void deleteBloodPressureTest_whenIdExists_thenDeleteBPEntity() {
+        // GIVEN
+        Integer bloodPressureId = 2;
+        doNothing().when(bloodPressureRepository).deleteById(2);
+
+        // WHEN
+        // THEN
+        bloodPressureService.deleteBloodPressure(bloodPressureId);
+        verify(bloodPressureRepository, times(1)).deleteById(bloodPressureId);
+    }
 }
