@@ -6,22 +6,35 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneId;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BloodPressureIntegrationTest {
+class BloodPressureIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private BloodPressureRepository bloodPressureRepository;
+
+    @TestConfiguration
+    static class TestConfig {
+        @Bean
+        public Clock clock() {
+            return Clock.fixed(Instant.parse("2024-12-10T10:00:00Z"), ZoneId.of("UTC"));
+        }
+    }
 
     @Test
     void getBloodPressuresTest_whenDBIsEmpty_thenReturnEmptyList() throws Exception {
@@ -63,5 +76,27 @@ public class BloodPressureIntegrationTest {
                         }
                     ]
                 """));
+    }
+
+    @Test
+    void saveBloodPressureTest_whenPayloadIsCorrect_thenReturnBloodPressureEntity() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(post("/api/blood-pressure")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "systolic": 120,
+                                "diastolic": 80
+                            }
+                        """)
+                )
+                // THEN
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.bloodPressureId").exists())
+                .andExpect(jsonPath("$.userId").doesNotExist())
+                .andExpect(jsonPath("$.systolic").value(120))
+                .andExpect(jsonPath("$.diastolic").value(80))
+                .andExpect(jsonPath("$.createdTime").value("2024-12-10T10:00:00Z"));
     }
 }
