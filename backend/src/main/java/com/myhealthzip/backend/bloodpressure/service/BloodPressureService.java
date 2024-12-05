@@ -11,4 +11,5 @@ public interface BloodPressureService {
 
     BloodPressure saveBloodPressure(NewBloodPressureDto newBloodPressureDto);
 
+    void deleteBloodPressure(Integer bloodPressureId);
 }

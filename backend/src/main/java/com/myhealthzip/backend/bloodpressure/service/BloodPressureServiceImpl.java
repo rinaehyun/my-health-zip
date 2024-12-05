@@ -40,4 +40,9 @@ public class BloodPressureServiceImpl implements BloodPressureService {
 
         return bloodPressureRepository.save(bloodPressureToSave);
     }
+
+    @Override
+    public void deleteBloodPressure(Integer bloodPressureId) {
+        bloodPressureRepository.deleteById(bloodPressureId);
+    }
 }

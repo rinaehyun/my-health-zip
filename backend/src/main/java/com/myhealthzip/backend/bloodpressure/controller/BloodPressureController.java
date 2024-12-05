@@ -26,4 +26,9 @@ public class BloodPressureController {
     public BloodPressure saveBloodPressure(@RequestBody NewBloodPressureDto newBloodPressureDto) {
         return bloodPressureService.saveBloodPressure(newBloodPressureDto);
     }
+
+    @DeleteMapping("/{bloodPressureId}")
+    public void deleteBloodPressure(@PathVariable Integer bloodPressureId) {
+        bloodPressureService.deleteBloodPressure(bloodPressureId);
+    }
 }
