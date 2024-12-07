@@ -1,6 +1,7 @@
 package com.myhealthzip.backend.bloodpressure.controller;
 
 import com.myhealthzip.backend.bloodpressure.dto.NewBloodPressureDto;
+import com.myhealthzip.backend.bloodpressure.dto.UpdateBloodPressureDto;
 import com.myhealthzip.backend.bloodpressure.model.BloodPressure;
 import com.myhealthzip.backend.bloodpressure.service.BloodPressureServiceImpl;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +31,13 @@ public class BloodPressureController {
     @DeleteMapping("/{bloodPressureId}")
     public void deleteBloodPressureById(@PathVariable Integer bloodPressureId) {
         bloodPressureService.deleteBloodPressureById(bloodPressureId);
+    }
+
+    @PutMapping("/{bloodPressureId}")
+    public BloodPressure updateBloodPressureById(
+            @PathVariable Integer bloodPressureId,
+            @RequestBody UpdateBloodPressureDto updateBloodPressureDto
+    ) {
+        return bloodPressureService.updateBloodPressureById(bloodPressureId, updateBloodPressureDto);
     }
 }

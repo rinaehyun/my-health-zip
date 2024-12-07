@@ -1,6 +1,7 @@
 package com.myhealthzip.backend.globalexception;
 
 import com.myhealthzip.backend.bloodpressure.exception.BloodPressureInputNotCompletedException;
+import com.myhealthzip.backend.bloodpressure.exception.BloodPressureNotFoundException;
 import com.myhealthzip.backend.user.exception.UserInputNotCompletedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,6 +29,16 @@ public class GlobalExceptionHandler {
         return new ErrorMessage(
                 Instant.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                ex.getMessage()
+        );
+    }
+
+    @ExceptionHandler(BloodPressureNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorMessage handleBloodPressureNotFoundException(BloodPressureNotFoundException ex) {
+        return new ErrorMessage(
+                Instant.now(),
+                HttpStatus.NOT_FOUND.value(),
                 ex.getMessage()
         );
     }

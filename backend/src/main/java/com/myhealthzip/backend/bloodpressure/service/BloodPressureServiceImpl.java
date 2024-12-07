@@ -1,7 +1,9 @@
 package com.myhealthzip.backend.bloodpressure.service;
 
 import com.myhealthzip.backend.bloodpressure.dto.NewBloodPressureDto;
+import com.myhealthzip.backend.bloodpressure.dto.UpdateBloodPressureDto;
 import com.myhealthzip.backend.bloodpressure.exception.BloodPressureInputNotCompletedException;
+import com.myhealthzip.backend.bloodpressure.exception.BloodPressureNotFoundException;
 import com.myhealthzip.backend.bloodpressure.model.BloodPressure;
 import com.myhealthzip.backend.bloodpressure.repository.BloodPressureRepository;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BloodPressureServiceImpl implements BloodPressureService {
@@ -44,5 +47,17 @@ public class BloodPressureServiceImpl implements BloodPressureService {
     @Override
     public void deleteBloodPressureById(Integer bloodPressureId) {
         bloodPressureRepository.deleteById(bloodPressureId);
+    }
+
+    @Override
+    public BloodPressure updateBloodPressureById(Integer bloodPressureId, UpdateBloodPressureDto updateBloodPressureDto) {
+
+        BloodPressure bloodPressureToUpdate = bloodPressureRepository.findById(bloodPressureId)
+                .orElseThrow(() -> new BloodPressureNotFoundException("Blood Pressure with id " + bloodPressureId + " cannot be found."));
+
+        bloodPressureToUpdate.setSystolic(updateBloodPressureDto.systolic());
+        bloodPressureToUpdate.setDiastolic(updateBloodPressureDto.diastolic());
+
+        return bloodPressureRepository.save(bloodPressureToUpdate);
     }
 }
