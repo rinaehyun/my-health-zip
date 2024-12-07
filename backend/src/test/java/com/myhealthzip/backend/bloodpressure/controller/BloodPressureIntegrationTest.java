@@ -177,4 +177,60 @@ class BloodPressureIntegrationTest {
                     ]
                 """));
     }
+
+    @Test
+    @DirtiesContext
+    void updateBloodPressureByIdTest_whenIdExists_thenUpdateBPEntity() throws Exception {
+        // GIVEN
+        Instant createdTime1 = Instant.parse("2024-12-04T10:00:00Z");
+        bloodPressureRepository.save(new BloodPressure(1, 1, 130, 75, createdTime1));
+
+        // WHEN
+        mockMvc.perform(put("/api/blood-pressure/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "systolic": 125,
+                                "diastolic": 90
+                            }
+                            """)
+                )
+                // THEN
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                    {
+                        "bloodPressureId": 1,
+                        "userId": 1,
+                        "systolic": 125,
+                        "diastolic": 90,
+                        "createdTime": "2024-12-04T10:00:00Z"
+                    }
+            """));
+    }
+
+    @Test
+    @DirtiesContext
+    void updateBloodPressureByIdTest_whenIdDoesNotExist_thenThrow() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(put("/api/blood-pressure/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "systolic": 125,
+                                "diastolic": 90
+                            }
+                            """)
+                )
+                // THEN
+                .andExpect(status().isNotFound())
+                .andExpect(content().json("""
+                {
+                    "status": 404,
+                    "message": "Blood Pressure with id 1 cannot be found."
+                }
+            """))
+                .andExpect(jsonPath("$.timestamp").exists());
+    }
+
 }
