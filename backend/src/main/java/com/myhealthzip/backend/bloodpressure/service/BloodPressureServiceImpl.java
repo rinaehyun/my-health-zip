@@ -42,7 +42,7 @@ public class BloodPressureServiceImpl implements BloodPressureService {
     }
 
     @Override
-    public void deleteBloodPressure(Integer bloodPressureId) {
+    public void deleteBloodPressureById(Integer bloodPressureId) {
         bloodPressureRepository.deleteById(bloodPressureId);
     }
 }

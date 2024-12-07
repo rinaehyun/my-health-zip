@@ -130,7 +130,7 @@ class BloodPressureIntegrationTest {
 
     @Test
     @DirtiesContext
-    void deleteBloodPressureTest_whenIdExists_thenDeleteBloodPressureEntity() throws Exception {
+    void deleteBloodPressureByIdTest_whenIdExists_thenDeleteBloodPressureEntity() throws Exception {
         // GIVEN
         Instant createdTime1 = Instant.parse("2024-12-04T10:00:00Z");
         Instant createdTime2 = Instant.parse("2024-12-05T12:30:00Z");

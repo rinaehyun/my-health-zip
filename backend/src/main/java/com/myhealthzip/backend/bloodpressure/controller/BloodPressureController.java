@@ -28,7 +28,7 @@ public class BloodPressureController {
     }
 
     @DeleteMapping("/{bloodPressureId}")
-    public void deleteBloodPressure(@PathVariable Integer bloodPressureId) {
-        bloodPressureService.deleteBloodPressure(bloodPressureId);
+    public void deleteBloodPressureById(@PathVariable Integer bloodPressureId) {
+        bloodPressureService.deleteBloodPressureById(bloodPressureId);
     }
 }
