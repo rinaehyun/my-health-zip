@@ -21,7 +21,7 @@ public class Temperature {
     private Integer userId;
 
     @Column(name = "temperature", nullable = false)
-    private Integer temperature;
+    private Double temperature;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdTime;
@@ -29,7 +29,7 @@ public class Temperature {
     // Constructor
     public Temperature() { /* constructor without any fields */ }
 
-    public Temperature(Integer temperatureId, Integer userId, Integer temperature, Instant createdTime) {
+    public Temperature(Integer temperatureId, Integer userId, Double temperature, Instant createdTime) {
         this.temperatureId = temperatureId;
         this.userId = userId;
         this.temperature = temperature;

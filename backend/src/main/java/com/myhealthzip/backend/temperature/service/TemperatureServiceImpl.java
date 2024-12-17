@@ -4,7 +4,6 @@ import com.myhealthzip.backend.temperature.model.Temperature;
 import com.myhealthzip.backend.temperature.repository.TemperatureRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
 import java.util.List;
 
 @Service
